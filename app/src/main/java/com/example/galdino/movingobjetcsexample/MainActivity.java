@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
                         int centerSide;
                         if(directionRight)
                         {
+                            // metade da tela + metade da metade - metade do tamanho do objeto
                             centerSide = halfScreen + (halfScreen/2) - (layoutParams.width/2);
                         }
                         else
