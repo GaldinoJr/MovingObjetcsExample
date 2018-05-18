@@ -13,13 +13,25 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/ic_launcher_background"
+        android:layout_marginLeft="30dp"/>
 
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:background="@android:color/black"
         android:layout_centerInParent="true"
+        />
+
+    <TextView
+        android:id="@+id/tv_side"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/left"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
         />
 
 </RelativeLayout>

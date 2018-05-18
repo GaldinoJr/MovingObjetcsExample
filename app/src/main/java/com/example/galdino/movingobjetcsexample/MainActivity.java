@@ -9,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
 {
     private ViewGroup mainLayout;
     private ImageView image;
-
+    private TextView tvSide;
 //    private int xDelta;
 //    private int yDelta;
     private int mScreenWidth;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         mainLayout = (RelativeLayout) findViewById(R.id.main);
         image = (ImageView) findViewById(R.id.image);
-
+        tvSide = findViewById(R.id.tv_side);
         image.setOnTouchListener(onTouchListener());
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity
     private View.OnTouchListener onTouchListener() {
         return new View.OnTouchListener() {
 
+            public int halfScreen;
+            public RelativeLayout.LayoutParams layoutParams;
+            public boolean directionRight;
             public int yDelta;
             public int xDelta;
 
@@ -61,43 +65,62 @@ public class MainActivity extends AppCompatActivity
                         break;
 
                     case MotionEvent.ACTION_UP:
-                        Toast.makeText(getApplicationContext(),
-                                "thanks for new location!", Toast.LENGTH_SHORT)
-                                .show();
+                        int centerSide;
+                        if(directionRight)
+                        {
+                            centerSide = halfScreen + (halfScreen/2) - (layoutParams.width/2);
+                        }
+                        else
+                        {
+                            centerSide = halfScreen - (halfScreen/2)- (layoutParams.width/2);
+                        }
+                        layoutParams.leftMargin = centerSide;
+                        layoutParams.rightMargin = 0;
+                        layoutParams.bottomMargin = 0;
+                        view.setLayoutParams(layoutParams);
                         break;
 
                     case MotionEvent.ACTION_MOVE:
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
+                        layoutParams = (RelativeLayout.LayoutParams) view
                                 .getLayoutParams();
-                        boolean directionRight = true;
+                        directionRight = true;
                         int movement = x - xDelta;
-                        int rightPosition =  layoutParams.leftMargin + layoutParams.width;
+                        int rightPosition =  movement + layoutParams.width;
+
+                        if(layoutParams.leftMargin >= movement)
+                        {
+                            directionRight = false;
+                        }
+                        // para não chegar nas bordas
+                        if(!directionRight) {
+                            rightPosition -= 30;
+                        }
+                        else
+                        {
+                            rightPosition += 30;
+                        }
 
                         if(movement > 0 && rightPosition <= mScreenWidth)
                         {
-                            int halfScreen = mScreenWidth/2;
-                            if(layoutParams.leftMargin >= movement)
-                            {
-                                directionRight = false;
-                            }
-                            layoutParams.leftMargin = movement;
+                            halfScreen = mScreenWidth/2;
 
                             if(directionRight)
                             {
                                 if(layoutParams.leftMargin > halfScreen)
                                 {
-                                    Toast.makeText(MainActivity.this,"passou para a direita", Toast.LENGTH_SHORT).show();
+                                    tvSide.setText(R.string.right);
                                 }
                             }
                             else
                             {
                                 if(rightPosition < halfScreen)
                                 {
-                                    Toast.makeText(MainActivity.this,"passou para a esquerda", Toast.LENGTH_SHORT).show();
+                                    tvSide.setText(R.string.left);
                                 }
                             }
 
                             //layoutParams.topMargin = y - yDelta;
+                            layoutParams.leftMargin = movement;
                             layoutParams.rightMargin = 0;
                             layoutParams.bottomMargin = 0;
                             view.setLayoutParams(layoutParams);
