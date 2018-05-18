@@ -11,7 +11,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+/*
+    Exemplo retirado e modifícado de:
+    http://www.devexchanges.info/2015/03/simple-moving-object-with-touch-events.html
 
+    IMPORTANTE: É PRECISO QUE A VIEW QUE IRÁ SE MOVER ESTEJA DENTRO DE UM RELATIVE LAYOUT
+
+ */
 public class MainActivity extends AppCompatActivity
 {
     private ViewGroup mainLayout;
